@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>product</title>
+</head>
+<body>
+    <h1>ชื่อสินค้า-{{product.title}}</h1>
+    <h2>ราคา {{product.price}} บาท</h2>
+    <h2>จำนวนสินค้าที่เหลือ {{product.stock}} ชิ้น</h2>
+
+    <p>รูปภาพ</p>
+    <ul>
+        {{#each product.images}}
+        <li>{{this}}</li>
+        {{/each}}
+    </ul>
+    
+    <p>ประเภท-{{product.category}}</p>
+
+    <p>ตัวเลือกสินค้า</p>
+    <ul>
+        {{#each product.option}}
+        <li>{{this}}</li>
+        {{/each}}
+    </ul>
+
+    <p>รายละเอียด<br>{{product.detail}}</p>
+    <ul>
+        {{#each product.quick-details}}
+        <li>{{@key}}:{{this}}</li>
+        {{/each}}
+    </ul>
+
+    <p>ความคิดเห็น</p>
+    <ul>
+        {{#each product.feedback}}
+        <li>{{this.comment}}<br>{{this.comment-by}}<br>{{this.comment-datetime}}</li>
+        {{/each}}
+    </ul>
+</body>
+</html>
