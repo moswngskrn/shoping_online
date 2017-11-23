@@ -4,41 +4,160 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>product</title>
+    <link rel="stylesheet" href="../css/style-view-product.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
+    
+
+    <script>
+        $(document).ready(function(){
+            const divImg=document.getElementById('list-img');
+            const Img=divImg.childNodes;
+            var image = '<img src="../images/'+Img[1].id+'"/>';
+            var showImg = document.getElementById('show-img');
+            showImg.innerHTML = image;
+            Img[1].classList.add("list-img-slider-li-visit");
+            Img[1].classList.remove("list-img-slider-li-no");
+        });
+    </script>
+    <title>{{product.title}}</title>
 </head>
 <body>
-    <h1>ชื่อสินค้า-{{product.title}}</h1>
-    <h2>ราคา {{product.price}} บาท</h2>
-    <h2>จำนวนสินค้าที่เหลือ {{product.stock}} ชิ้น</h2>
+    <div class="menu-bar">
+        <div class="menu-bar-help">
+            <div class="menu-bar-help-top">
+                <a href="#">ติดต่อเรา</a>
+                <a href="#">ช่วยเหลือ</a>
+                <a href="#">เข้าสู่ระบบ</a>
+                <a href="#">สมัคสมาชิก</a>
+            </div>
+        </div>
+        <div class="menu-bar-main">
+            <div class="menu-bar-main-content">
+                <div class="menu-bar-main-content-logo">
+                    <a href="/"><img src="../images/logo2.png"/></a>
+                </div>
+                <div class="menu-bar-main-content-search">
+                    <div class="group-sherch">
+                        <input type="text"/>
+                        <button><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+                <div class="menu-bar-main-content-cart">
+                    dd<i class="fa fa-shopping-cart"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="product-space">
+        <div class="product-space-content">
+            <div class="product-space-content-left">
+                <div class="product-space-content-left-img-box">
+                    <div class="product-space-content-left-show-img" id="show-img"></div>
+                    <div class="product-space-content-left-list-img">
+                        <div class="product-space-content-left-list-img-box">
+                            <div class="product-space-content-left-list-img-slider" id="list-img">
+                                {{#each product.images}}
+                                <div class="product-space-content-left-list-img-slider-li list-img-slider-li-no" id="{{this}}">
+                                    <img src="../images/{{this}}"/>
+                                </div>
+                                {{/each}}
+                            </div>
+                        </div>
+                        <span class="view-product-image-prev" onclick="prevViewImage();"><i class="fa fa-angle-left"></i></span>
+                        <span class="view-product-image-next" onclick="nextViewImage();"><i class="fa fa-angle-right"></i></span>
+                    </div>
+                </div>
 
-    <p>รูปภาพ</p>
-    <ul>
-        {{#each product.images}}
-        <li>{{this}}</li>
-        {{/each}}
-    </ul>
-    
-    <p>ประเภท-{{product.category}}</p>
+            </div>
+            <div class="product-space-content-right">
+                <div class="product-space-content-right-info-header">
+                    <h1 class="text-title">{{product.title}}</h1>
+                </div>
+                <div class="product-space-content-right-info-body">
+                    <select class="select_option">
+                        {{#each product.option}}
+                        <option value="{{this}}">{{this}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="product-space-content-right-info-bottom">
+                    <h1 class="text-title">{{product.price}} บาท</h1>
+                    <button class="btn-full-red">หยิบใส่ตะกร้า</button>
+                </div>
+            </div>
+        </div>
+        <div class="product-space-detail">
+            <h1 class="text-title">รายละเอียดสินค้า</h1>
+            <div class="product-space-detail-text">
+                {{product.detail}}
+            </div>
+            <div class="product-space-quick-detail">
+                <table>
+                    {{#each product.quick-details}}
+                    <tr><td>{{@key}}</td><td>{{this}}</td></tr>
+                    {{/each}}
+                </table>
+            </div>
+        </div>
+        
+        <div class="product-space-feedback">
+            <h1 class="text-title">รีวิวจากผู้ใช้</h1>
+            {{#each product.feedback}}
+            <div class="product-space-feedback-box">
+                <div class="product-space-feedback-box-msg">{{this.comment}}</div>
+                <div class="product-space-feedback-box-by">โดย {{this.comment-by}} เมื่อ {{this.comment-datetime}}</div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    <script>
+        function init() {
+        window.addEventListener('scroll', function(e){
+            var distanceY = window.pageYOffset || document.documentElement.scrollTop,
+                shrinkOn = 100,
+                header = document.querySelector("icon");
+            if (distanceY > shrinkOn) {
+                $('.menu-bar').css('height','50px');
+                $('.menu-bar-main').css('top','0px');
+            } else {
+                $('.menu-bar').css('height','100px');
+                $('.menu-bar-main').css('top','30px');
+            }
+        });
+        }
+        window.onload = init();
 
-    <p>ตัวเลือกสินค้า</p>
-    <ul>
-        {{#each product.option}}
-        <li>{{this}}</li>
-        {{/each}}
-    </ul>
+        var divSlide = document.getElementById('list-img');
+        var countImg = divSlide.childElementCount;
+        var x_image=0;
 
-    <p>รายละเอียด<br>{{product.detail}}</p>
-    <ul>
-        {{#each product.quick-details}}
-        <li>{{@key}}:{{this}}</li>
-        {{/each}}
-    </ul>
+        function prevViewImage(){
+            if(x_image<0){
+                x_image = x_image+65;
+                divSlide.style.marginLeft = x_image.toString()+'px';
+            }
+        }
 
-    <p>ความคิดเห็น</p>
-    <ul>
-        {{#each product.feedback}}
-        <li>{{this.comment}}<br>{{this.comment-by}}<br>{{this.comment-datetime}}</li>
-        {{/each}}
-    </ul>
+        function nextViewImage(){
+            var imgWidth = 65;
+            var frameWidth = countImg*imgWidth;
+            if(frameWidth+x_image>6*imgWidth){
+                x_image = x_image-65;
+                divSlide.style.marginLeft = x_image.toString()+'px';
+            }
+        }
+        $('.product-space-content-left-list-img-slider-li').mouseover(function(){
+            for(var i=1;i<=countImg*2;i+=2){
+                    divSlide.childNodes[i].classList.remove("list-img-slider-li-visit");
+                    divSlide.childNodes[i].classList.add("list-img-slider-li-no");
+            }
+            var Img = document.getElementById(this.id);
+            Img.classList.add("list-img-slider-li-visit");
+            var image = '<img src="../images/'+this.id+'"/>';
+            var showImg = document.getElementById('show-img');
+            showImg.innerHTML = image;
+        });
+    </script>
 </body>
 </html>

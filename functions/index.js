@@ -29,22 +29,23 @@ app.get('/',(request,response)=>{
     });
 });
 
-app.get('/getproduct.json',(request,response)=>{
-    response.set('Cache-Control','public, max-age=300, s-maxage=600');
-    getProduct().then(product=>{
-        response.json(product)
-    });
-});
-
 app.get('/product-detail/:nameproduct',(request,response)=>{
     var name = request.param('nameproduct');
     response.set('Cache-Control','public, max-age=300, s-maxage=600');
-    getProductById(name).then(product=>{
+    getProductById(name.toString()).then(product=>{
         if(!product){
             response.send('Don\'t have "'+name+'"');
             return;
         }
         response.render('view-product',{ product,name });
+    });
+});
+
+
+app.get('/getproduct.json',(request,response)=>{
+    response.set('Cache-Control','public, max-age=300, s-maxage=600');
+    getProduct().then(product=>{
+        response.json(product)
     });
 });
 
